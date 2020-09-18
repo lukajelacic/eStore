@@ -1,0 +1,454 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/profile.css">
+<link rel="stylesheet" type="text/css" href="~/css/mGameDetailes.css" !important>
+
+<style>
+    .mRecenzijaImage {
+        position: relative;
+        height: 50px;
+        width: 50px;
+        border: 1px solid black;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background-color: white;
+    }
+
+    .mNaziv {
+        position: absolute;
+        color: #353535;
+        font-weight: bold;
+        text-decoration: none;
+        left: 110px;
+    }
+
+        .mNaziv:hover, .mNaziv:active {
+            color: black;
+        }
+    
+    
+    .mReportBtn {
+        position: relative;
+        float: right;
+        color: #767676;
+        font-size:20px;
+    }
+        .mReportBtn:hover {
+            color: black;
+        }
+        .mOcjena1
+        {
+            position:relative;
+            top:-40px;
+            left:65px;
+            margin:0;
+        }
+    .container1 {
+        box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2);
+        padding:25px 0px 25px 0px;
+    }
+</style>
+@using eStore_web.EF_Models;
+@using eStore_web.Common;
+@using eStore_web.ViewModel;
+@{
+
+    LoginInfo Log = Context.GetLogiraniKorisnik();
+    Kupac Kup = null;
+
+    if (Log != null)
+    {
+        if (Log.TipKorisnika == 1)
+        {
+            Kup = Context.GetLogiraniKorisnikAll<Kupac>();
+        }
+    }
+
+    GameDetailesVM VM = ViewBag.GameDetailesVM;
+}
+<div class="container1">
+    <input type="text" id="IgraID" value="@VM.Igra.IgraID" hidden>
+    @if (Kup != null)
+    {
+        <input type="text" id="KupacID" value="@Kup.KupacID" hidden>
+    }
+    <div class="mYT">
+        @if (ViewBag.GameDetailesVM.GameTrailer != null)
+        {
+        <iframe src=@ViewBag.GameDetailesVM.GameTrailer allow="autoplay; encrypted-media" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+        }
+       
+    </div>
+    <hr />
+    <div class="mElements">
+        <div class="mButtons">
+
+
+
+            @if (Kup != null)
+            {
+                @if (VM.ImaIgru == false)
+                {
+                    if (VM.ImaWishList == true)
+                    {
+
+                        <button class="btn btn-info btn-block" id="RemoveWishList">Wishlist <span class="glyphicon glyphicon-ok" style="font-size:15px;"></span></button>
+                        <button class="btn btn-default btn-block" id="AddWishList" style="display:none;">Wishlist  <span class="glyphicon glyphicon-plus" style="font-size:13px;"></span></button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-info btn-block" id="RemoveWishList" style="display:none;">Wishlist <span class="glyphicon glyphicon-ok " style="font-size:15px;"></span></button>
+                        <button class="btn btn-default btn-block" id="AddWishList">Wishlist   <span class="glyphicon glyphicon-plus" style="font-size:13px;"></span></button>
+                    }
+                }
+            }
+
+
+            @if (Kup != null)
+            {
+                if (VM.PratiIgru == true)
+                {
+                    <button class="btn btn-info btn-block" id="RemovePrati">Prati <span class="glyphicon glyphicon-ok" style="font-size:15px;"></span></button>
+                    <button class="btn btn-default btn-block" id="AddPrati" style="display:none;">Prati <span class="glyphicon glyphicon-plus" style="font-size:13px;"></span></button>
+                }
+                else
+                {
+                    <button class="btn btn-info btn-block" id="RemovePrati" style="display:none;">Prati <span class="glyphicon glyphicon-ok" style="font-size:15px;"></span></button>
+                    <button class="btn btn-default btn-block" id="AddPrati">Prati <span class="glyphicon glyphicon-plus" style="font-size:13px;"></span></button>
+                }
+
+            }
+
+            <br /><br /><br />
+
+
+
+
+
+
+
+
+            <h3><b>@VM.Ocjena  <span class="glyphicon glyphicon-star small" style="color:black;margin-top:5px;"></span></b></h3>
+            <a href="#" class="mm">Pogledaj recenzije</a>
+
+        </div>
+
+        <br />
+
+        <h2 id="mGameTitle"><b>@VM.Igra.Naziv</b></h2>
+
+        @if (VM.Popust != null)
+        {
+            <h4 style="text-decoration:line-through;margin-bottom:3px;">@VM.Igra.Cijena KM</h4>
+
+            <h3 style="margin-top:0;"><b>@VM.NovaCijena KM</b>  <partial class="mPopust">-@VM.Popust.PopustProcent %</partial></h3>
+
+
+
+        }
+        else
+        {
+            <h3><b>@VM.Igra.Cijena KM</b></h3>
+        }
+
+
+
+
+        @if (Kup != null)
+        {
+            @if (VM.ImaIgru == false)
+            {
+                @if (Kup.PretplacenNaPremium == false || VM.Igra.PremiumStatus == false)
+                {
+                    @Html.ActionLink("Kupi", "KupiIgru", "Kupac", new { KupacID = Kup.KupacID, IgraID = VM.Igra.IgraID }, new { @class = "btn btn-success" });
+                }
+
+
+                @if (Kup.PretplacenNaPremium == true && VM.Igra.PremiumStatus == true)
+                {
+                    @Html.ActionLink("Preuzmi", "PreuzmiIgru", "Kupac", new { KupacID = Kup.KupacID, IgraID = VM.Igra.IgraID }, new { @class = "btn btn-primary" });
+
+                }
+            }
+
+            else
+            {
+
+                <button class="btn btn-success disabled" style="min-width:90px;min-height:34px;" disabled><b>Kupljeno </b><span class="glyphicon glyphicon-ok small" style="font-size:14px;font-weight:200;"></span></button>
+            }
+        }
+        else
+        {
+
+            @Html.ActionLink("Kupi", "Login", "Autentifikacija", new { @class = "btn btn-primary" });
+
+        }
+    </div>
+
+
+
+
+
+
+
+
+
+
+    @if (VM.ImaRecenziju == false && VM.ImaIgru == true)
+    {
+
+
+        <input type="text" value="1" id="Ocjena" hidden="" />
+        <input type="text" value=@Kup.KupacID name="KupacID" id="KupacID" hidden="">
+        <input type="text" value=@VM.Igra.IgraID name="IgraID" id="IgraID" hidden="">
+        <div class="mRecenzija">
+
+            <textarea class="form-control" id="textarea" name="textarea" maxlength="1024" required="" placeholder="vase misljenje o ovoj igri..."></textarea>
+            <div class="mOcjena">
+                <span class="glyphicon glyphicon-star mStar" style="color:#ffad05;"></span>
+                <span class="glyphicon glyphicon-star mStar" style="color:#979797;"></span>
+                <span class="glyphicon glyphicon-star mStar" style="color:#979797;"></span>
+                <span class="glyphicon glyphicon-star mStar" style="color:#979797;"></span>
+                <span class="glyphicon glyphicon-star mStar" style="color:#979797;"></span>
+            </div>
+
+
+            <buton id="mRecenzijaButton" type="submit" class="btn btn-default btn-block">Objavi</buton>
+            <buton id="mRecenzijaButton1" class="btn btn-success btn-block disabled" style="display:none;">Recenzija objavljena</buton>
+
+
+        </div>
+
+    }
+    else
+    {
+        @if (VM.ImaRecenziju == true && VM.ImaIgru == true)
+        {
+            <div class="mRecenzija" style="height:48px;">
+                <buton id="mRecenzijaButton1" class="btn btn-success btn-block disabled">Recenzija objavljena</buton>
+            </div>
+        }
+
+    }
+
+
+
+
+
+    <div class="mRecenzije">
+        @foreach (Recenzija x in VM.Recenzije)
+        {
+            <div class="mRecenzija" style="background-color:#d8d8d8;height:150px;padding-right:5px;">
+
+
+
+                @if (x.Kupac.Osoba.OsobaImage != null)
+                {
+                    var base64 = Convert.ToBase64String(x.Kupac.Osoba.OsobaImage.Image);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                    <img class="mRecenzijaImage" src="@imgsrc">
+                }
+                else
+                {
+                    <img class="mRecenzijaImage" src="~/images/profileDemo.png">
+                }
+
+
+
+
+
+                <a href="#" class="mNaziv">@x.Kupac.UserName</a>
+                <p class="mNazivID" hidden>@x.RecenzijaID</p>
+                <p class="mKupacID" hidden>@x.KupacID</p>
+                @if (Kup != null)
+                {
+                @if (x.Kupac.KupacID != Kup.KupacID)
+                {
+                <span class="glyphicon glyphicon-flag small mReportBtn"></span>
+                }
+                }
+                <br /><br />
+                <p class="mOcjena mOcjena1">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= x.Ocjena)
+                        {
+                            <span class="glyphicon glyphicon-star" style="color:#ffad05; font-size:20px;"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-star" style="color:#979797; font-size:20px;"></span>
+                        }
+                    }
+                </p>
+                <p>
+                    @x.RecenzijaText
+                </p>
+
+
+            </div>
+        }
+    </div>
+
+</div>
+
+<partial name="_ReportWindow" />
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () { 
+
+
+
+        //Dodavanje,Brisanje wishlista...........
+        var IgraID = $("#IgraID").val();
+        var KupacID = $("#KupacID").val();
+        $("#AddWishList").click(function () {
+
+            $.get("/Kupac/AddWishList?IgraID=" + IgraID + "&KupacID=" + KupacID, function (data) {
+
+                if (data == true) {
+
+                    $("#AddWishList").css("display", "none");
+                    $("#RemoveWishList").css("display", "block");
+                }
+            });
+        });
+        $("#RemoveWishList").click(function () {
+
+
+            $.get("/Kupac/RemoveWishList?IgraID=" + IgraID + "&KupacID=" + KupacID, function (data) {
+
+                if (data == true) {
+
+                    $("#RemoveWishList").css("display", "none");
+                    $("#AddWishList").css("display", "block");
+
+                }
+            });
+
+        });
+   
+        //Dodavanje,Brisanje pracenja...........
+        $("#AddPrati").click(function () {
+
+            $.get("/Kupac/AddPrati?IgraID=" + IgraID + "&KupacID=" + KupacID, function (data) {
+
+                if (data == true) {
+
+                    $("#AddPrati").css("display", "none");
+                    $("#RemovePrati").css("display", "block");
+                }
+            });
+        });
+        $("#RemovePrati").click(function () {
+
+            
+
+            $.get("/Kupac/RemovePrati?IgraID=" + IgraID + "&KupacID=" + KupacID, function (data) {
+                console.log(111);
+                if (data == true) {
+                    console.log('tru dat');
+                    $("#RemovePrati").css("display", "none");
+                    $("#AddPrati").css("display", "block");
+
+                }
+            });
+
+        });
+    
+    });
+   
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $("#mRecenzijaButton").click(function () {
+            var KupacID = $("#KupacID").val();
+            var IgraID = $("#IgraID").val();
+            var Ocjena = $("#Ocjena").val();
+            var textarea = $("#textarea").val();
+
+            console.log(KupacID + " " + IgraID + " " + Ocjena + " " + textarea);
+
+            $.get("/Kupac/DodajRecenzija?KupacID=" + KupacID + "&IgraID=" + IgraID + "&Ocjena=" + Ocjena + "&textarea=" + textarea, function (data) {
+
+
+                console.log(data);
+                if (data == true) {
+
+
+                    $(".mRecenzija").css("height", "55px")
+                    $(".mRecenzija textarea").fadeOut(300);
+                    $(".mOcjena").fadeOut(300);
+                    console.log("hello");
+                    $("#mRecenzijaButton").fadeOut(250);
+                    $("#mRecenzijaButton1").fadeIn(250);
+
+
+
+                }
+            });
+
+
+
+
+        });
+
+
+
+
+
+
+
+        $(".mStar").mouseover(function () {
+
+            $(this).prevAll().css("color", "ffad05");
+            $(this).css("color", "ffad05");
+            $(this).nextAll().css("color", "#979797");
+            $("#Ocjena").val(5 - (($(this).nextAll().length)));
+            console.log($("#Ocjena").val());
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $(".close").click(function () {
+
+            $(".mReportWindowBg").css("display", "none");
+        });
+        $(".mReportBtn").click(function () {
+
+            $(".mReportWindowBg").css("display", "block");
+
+
+            var m = $(this).parent()
+            m = m.find(".mKupacID")[0];
+            m = $(m).html();
+
+
+            var p = $(this).parent()
+            p = p.find(".mNazivID")[0];
+            p = $(p).html();
+
+            $("#report").click(function () {
+
+                var t = $("#text").val();
+                $("#text").val("");
+                console.log(p + " " + m+t);
+                $.post("/Kupac/AddReport?RecenzijaID=" + p + "&KupacID=" + m + "&text=" + t);
+                $(".mReportWindowBg").css("display", "none");
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+

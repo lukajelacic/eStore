@@ -1,0 +1,55 @@
+﻿body {
+    margin-top: 100px;
+    min-height: 100%
+}
+
+html {
+    height: 100%
+}
+
+.mUser {
+    position: relative;
+    border: 1px solid black;
+    padding: 5px 20px 5px 5px;
+    margin: 6px 5px 6px 5px;
+    min-width: 160px;
+    height: 40px;
+    border: 1px solid #d1d1d1;
+    box-shadow: 0 4px 8px 0 rgba(0, 78, 100, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+    .mUser a {
+        color: #9a9a9a;
+        font-weight: 600;
+        text-decoration: none;
+        margin-left: 5px;
+    }
+
+        .mUser a:hover {
+            color: #575757;
+        }
+
+    .mUser img {
+        height: 30px;
+        width: 30px;
+        border: 1px solid #575757;
+    }
+.mLayoutDropDownButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    float: right;
+    height: 39px;
+    width: 20px;
+    border: none;  
+    background-color: transparent;
+    color: #6f6f6f;
+}
+    .mLayoutDropDownButton:hover {
+        color: black;
+
+    }
+ 
+

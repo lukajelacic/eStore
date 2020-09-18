@@ -1,0 +1,33 @@
+﻿@model List<eStore_web.EF_Models.PrijavaPremium>
+@{
+    ViewData["Title"] = "GetZahtjeveZaPremium";
+}
+<style>
+    table {
+        text-align: center;
+    }
+</style>
+<h2>Zahtjevi za premium</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kupac</th>
+            <th>Datum zahtjeva</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.Kupac.UserName</td>
+                <td>@item.DatumPrijave</td>
+                <td>
+                    <a asp-action="PrihvatiPremium" asp-route-id="@item.Id" class="btn btn-success">Prihvati</a>
+                    <a asp-action="OdbijPremium" asp-route-id="@item.Id" class="btn btn-warning">Odbij</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

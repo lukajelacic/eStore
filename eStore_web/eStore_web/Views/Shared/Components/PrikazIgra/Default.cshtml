@@ -1,0 +1,76 @@
+﻿@page
+@using eStore_web.EF_Models;
+
+
+@if (ViewBag.igre.Count == 0)
+{
+    <h2 id="noContent">Korisnik ne posjeduje ni jednu igricu</h2>
+}
+else
+{
+
+    @for (int i = 0; i < ViewBag.igre.Count; i++)
+    {
+
+        <div class="mElement">
+
+            <a href="/Kupac/GameDetailes?=@ViewBag.Igre[i].IgraID">
+                @if (ViewBag.Igre[i].Igra.IgricaImage != null)
+                {
+                    var base64 = Convert.ToBase64String(ViewBag.Igre[i].Igra.IgricaImage.Image);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                    <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/images/image.jpg" alt="Card image cap">
+                }
+            </a>
+            @if (ViewBag.refunds[i] == 0)
+            {
+                <button class="mButton mRefundButton mReportBtn">refund</button>
+            }
+            <p class="mGame">@ViewBag.Igre[i].Igra.Naziv<p>
+            <p class="mPlayTime">0 h Igrano</p>
+            <p class="mDatum">Datum kupovine @ViewBag.Igre[i].VrijemeKupovine.ToString("dd.MM.yyyy") god.</p>
+            <p class="IgraID" hidden>@ViewBag.Igre[i].IgraID</p>
+            <p class="KupacID" hidden>@ViewBag.Igre[i].KupacID</p>
+            <p></p>
+            <br />
+        </div>
+
+
+    }
+
+    @for (int i = 0; i < ViewBag.PreuzeteIgre.Count; i++)
+    {
+
+        <div class="mElement">
+
+            <a href="/Kupac/GameDetailes?=@ViewBag.PreuzeteIgre[i].IgraID">
+                @if (ViewBag.PreuzeteIgre[i].Igra.IgricaImage != null)
+                {
+                    var base64 = Convert.ToBase64String(ViewBag.PreuzeteIgre[i].Igra.IgricaImage.Image);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                    <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/images/image.jpg" alt="Card image cap">
+                }
+            </a>
+            
+            <p class="mGame">@ViewBag.PreuzeteIgre[i].Igra.Naziv<p>
+            <p class="mPlayTime">0 h Igrano</p>
+            <p class="mDatum">Datum kupovine @ViewBag.PreuzeteIgre[i].VrijemePreuzimanja.ToString("dd.MM.yyyy") god.</p>
+            <p class="IgraID" hidden>@ViewBag.PreuzeteIgre[i].IgraID</p>
+            <p class="KupacID" hidden>@ViewBag.PreuzeteIgre[i].KupacID</p>
+            <p></p>
+            <br />
+        </div>
+    }
+}
+
+<script src="~/js/PopUp.js"></script>

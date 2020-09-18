@@ -1,0 +1,88 @@
+﻿@using System;
+@using eStore_web.EF_Models;
+
+@{
+    Developer dev = (Developer)ViewData["dev"];
+}
+<form class="form-horizontal" action="/Developer/SaveChangesProfile">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Uređivanje profila</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <input id="devId" name="devID" type="text" value="@dev.DeveloperID" hidden>
+            <label class="col-md-4 control-label" for="naziv">Naziv kompanije</label>
+            <div class="col-md-4">
+                <input id="naziv" name="nazivKompanije" type="text" placeholder="" class="form-control input-md" value="@dev.NazivKompanije" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Ime</label>
+            <div class="col-md-4">
+                <input id="ime" name="ime" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.Ime" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Prezime</label>
+            <div class="col-md-4">
+                <input id="prezime" name="prezime" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.Prezime" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Datum Rodjenja</label>
+            <div class="col-md-4">
+                <input id="datum" name="datumRodenja" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.DatumRodenja" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Email</label>
+            <div class="col-md-4">
+                <input id="email" name="email" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.EmailAddress" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Grad</label>
+            <div class="col-md-4">
+                <input id="grad" name="grad" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.Grad" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Regija</label>
+            <div class="col-md-4">
+                <input id="regija" name="regija" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.Grad.Regija.Naziv" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Regija</label>
+            <div class="col-md-4">
+                <input id="drzava" name="drzava" type="text" placeholder="" class="form-control input-md" value="@dev.Osoba.Grad.Regija.Drzava.Naziv" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>*@
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="submit"></label>
+            <div class="col-md-4">
+                <button id="submit" name="submit" class="btn btn-primary">Pošalji</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

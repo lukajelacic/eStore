@@ -1,0 +1,223 @@
+﻿@using eStore_web.ViewModel
+@using eStore_web.EF_Models
+@{
+    Layout = "_LayoutStore";
+    KupacIndexVM VM = ViewBag.kupacIndexVM;
+
+    
+ }
+<link rel="stylesheet" type="text/css" href="~/css/Search.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/Loading.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/pocetna.css" !important>
+
+
+
+<div class="container" id="mContainer">
+
+
+
+    <button type="button" id="uno" class="btn btn-default">Filter</button><br />
+
+    <div id="filterValues">
+
+
+
+
+
+
+
+        @using (Html.BeginForm("Index", "Kupac", FormMethod.Post, new { @class = "form-horizontal filterForm" }))
+        {<fieldset>
+
+                <br />
+                <!-- Search input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="pretraga">pretraga</label>
+                    <div class="col-md-4">
+                        <input id="pretraga" name="pretraga" type="search" placeholder="unesite kljucne rijeci" class="form-control input-md" value="@VM.pretraga">
+
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="sortirajPo">sortiraj po</label>
+                    <div class="col-md-4">
+                        <select id="sortirajPo" name="sortirajPo" class="form-control">
+
+                            <option value="1">Najpopularnije</option>
+                            <option value="2">Najnovije</option>
+                            <option value="3">Cijena rast.</option>
+                            <option value="4">Cijena opad.</option>
+                            <option value="5">Popust opad.</option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="zanr">zanr</label>
+                    <div class="col-md-4">
+                        <select id="zanr" name="zanr" class="form-control">
+
+                            <option value="0">Svi</option>
+                            @foreach (GameGenre x in VM.gameGenre)
+                            {
+                                <option value="@x.GameGenreID">@x.NazivZanra</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="kategorija">kategorija</label>
+                    <div class="col-md-4">
+                        <select id="kategorija" name="kategorija" class="form-control">
+                            <option value="0">Svi</option>
+                            @foreach (RatingCategorie x in VM.ratingCategorie)
+                            {
+                                <option value="@x.RatingCategorieID">@x.NazivKategorije (@x.OznakaKategorije)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Button (Double) -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="button1id"></label>
+                    <div class="col-md-4">
+                        <button id="button1id" name="button1id" class="btn btn-default btn-block">filtriraj</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        }
+        <br /><br />
+    </div>
+
+
+
+
+
+    <div class="cards">
+
+        <br />
+        <div class="loader" id="cardLoader"></div>
+
+        <div class="newCards">
+
+        </div>
+
+        <a class="btn btn-primary btn-block" id="mLoadMore" style="position:relative;width:80%;margin-left:10%;display:none">Ucitaj vise</a>
+        <br />
+
+
+
+    </div>
+
+    
+
+</div>
+
+<div>
+    <input type="text" id="pret" value="@ViewBag.kupacIndexVM.pretraga" hidden readonly />
+    <input type="text" id="sort" value="@ViewBag.kupacIndexVM.sortirajPo" hidden readonly />
+    <input type="text" id="zanr1" value="@ViewBag.kupacIndexVM.zanr" hidden readonly />
+    <input type="text" id="kategorija1" value="@ViewBag.kupacIndexVM.kategorija" hidden readonly />
+    <input type="text" id="from" value="@ViewBag.kupacIndexVM.from" hidden readonly />
+    <input type="text" id="to" value="@ViewBag.kupacIndexVM.to" hidden readonly />
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/js/QuickSearchjs.js"></script>
+<script>
+
+    function LoadGames() {
+
+        $("#mLoadMore").html(". . .");
+        $("#mLoadMore").addClass("disabled");
+
+        var pretraga = $("#pret").val();
+        var sortirajPo = $("#sort").val();
+        var zanr = $("#zanr1").val();
+        var kategorija = $("#kategorija1").val();
+        var from = $("#from").val();
+        var to = $("#to").val();
+
+        $.get("/Kupac/LoadGames?pretraga=" + pretraga + "&sortirajPo=" + sortirajPo + "&zanr=" + zanr + "&kategorija=" + kategorija + "&from=" + from + "&to=" + to, function (data) {
+            
+            $(".newCards").append(data);
+            console.log(data);
+
+            from = parseInt(from);
+            from += 20;
+            to = parseInt(to);
+            to += 20;
+            from = $("#from").val(from);
+            to = $("#to").val(to);
+
+
+            $("#mLoadMore").html("Ucitaj jos");
+            $("#mLoadMore").removeClass("disabled");
+            $("#mLoadMore").css("display", "block");
+
+            $(".cards .loader").css("display", "none");
+
+            var s = $("#ddk").html();
+            
+            if (s == "nm") {
+            $("#mLoadMore").css("display", "none");
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+
+       
+       
+
+
+        LoadGames();
+        
+        $("#mLoadMore").click(function () {
+            console.log("20m");
+            LoadGames();
+        });
+
+
+
+        $("#uno").click(function () {
+            $("#filterValues").slideToggle(500);
+        });
+
+
+        $("#pretraga").prop('selectedIndex', $("#pret").val());
+        $("select#sortirajPo").prop('selectedIndex', $("#sort").val() - 1);
+
+        $("#zanr").val($("#zanr1").val());
+        $("#kategorija").val($("#kategorija1").val());
+        
+        console.log($("#zanr1").val()+ ' elllloo');
+
+
+
+
+
+
+    });
+
+
+</script>
+
+
+
+
+
+
+
+
+
+

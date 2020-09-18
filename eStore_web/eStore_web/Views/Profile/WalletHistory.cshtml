@@ -1,0 +1,58 @@
+﻿@using eStore_web.EF_Models;
+@{ int brojac = 0; }
+
+<style>
+    th
+    {
+text-align:center;
+    }
+</style>
+
+<p>@ViewBag.w</p>
+<table class="table table-hover table-bordered text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Iznos transakcije</th>
+            <th scope="col">Trenutno stanje</th>
+            <th scope="col">Tip transakcije</th>
+            <th scope="col">Igra</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (WalletHistory x in ViewBag.wh)
+        {
+            brojac++;
+        <tr>
+            <th scope="row">@brojac</th>
+            @if (x.TransactionAmount != 0)
+            {
+                if (x.TransactionAmount > 0)
+                {
+                    <td style="color:blue;font-weight:600;">@Math.Round(x.TransactionAmount,2)</td>
+                }
+                else
+                {
+                    <td style="color:red;font-weight:600;">@Math.Round(x.TransactionAmount,2)</td>
+                }
+            }
+            else
+            {
+                    <td style="color:green;font-weight:600;">FREE</td>
+                }
+            <td style="color:#808080;font-weight:600;">@Math.Round(x.CurrentBalance,2)</td>
+            @if (x.IsIgra == true)
+            {
+                <td>Igrica</td>
+                <td>@x.Igra.Naziv</td>
+            }
+            else
+            {
+                <td>-</td>
+                <td>#</td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

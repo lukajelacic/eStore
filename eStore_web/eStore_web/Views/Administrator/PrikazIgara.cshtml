@@ -1,0 +1,50 @@
+
+@model List<eStore_web.EF_Models.Igra>
+@{
+    ViewData["Title"] = "PrikazIgara";
+
+    var porukagreska = (string)ViewData["poruka-greska"];
+}
+<h2>Prikaz igara</h2>
+@if (porukagreska != null)
+{
+    <div class="alert alert-success" role="alert" id="porukaBox">
+        @porukagreska
+    </div>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Naziv</td>
+            <td>Zanr</td>
+            <td>Kategorija</td>
+            <td>Cijena</td>
+            <td>Datum objave</td>
+            <td>Premium status</td>
+            <td>Akcija</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in @Model)
+        {
+            <tr>
+                <td>@x.Naziv</td>
+                <td>@x.GameGenre.NazivZanra</td>
+                <td>@x.RatingCategorie.NazivKategorije</td>
+                <td>@x.Cijena</td>
+                <td>@x.DatumObjave.ToShortDateString()</td>
+                @if (x.PremiumStatus == false)
+                {
+                    <td><a asp-action="PremiumOn" asp-route-id="@x.IgraID" class="btn btn-danger">NE</a></td>
+                }
+                else
+                {
+                    <td><a asp-action="PremiumOff" asp-route-id="@x.IgraID" class="btn btn-primary">DA</a></td>
+           
+                }
+                <td><a asp-action="Uredi" asp-route-id="@x.IgraID" class="btn btn-info">Uredi</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table>

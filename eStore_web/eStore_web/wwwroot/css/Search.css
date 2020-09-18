@@ -1,0 +1,110 @@
+﻿#searchWrap
+{
+position:relative;
+width:250px;
+height:40px;
+margin-top:5px;
+
+}
+#search {
+    position: relative;
+    width: 250px;
+    height:40px;
+    padding:10px;
+    border-radius:5px;
+    border:2px solid #d1d1d1;
+    transition-duration:300ms;
+}
+    #search:focus {
+        box-shadow: 0 4px 8px 0 rgba(0, 78, 100, 0.2), 0 6px 20px 0 rgba(0, 78, 100, 0.05);
+    }
+#search:focus
+{
+    border:2px solid #00c8ff;
+    outline:none;
+}
+#searchButton {
+    position:absolute;
+    height: 36px;
+    width: 36px;
+    border-radius:3px;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius:0px;
+    border:none;
+    color:black;
+    background-color: transparent;
+    color: white;
+    outline: none;
+    text-decoration: none;
+    right:2px;
+    top:2px;
+}
+#searchButton span
+{
+    color:#eee;
+}
+    #searchButton:hover span {
+        color: black;
+    }
+   
+    .SearchContent {
+       
+        position: absolute;
+        z-index: 1;
+        width: 350px;
+        padding: 0;
+        background-color: white;
+        border: 1px solid #d8d8d8;
+        display: none;
+        overflow: hidden;
+        border-radius: 5px;
+        margin-left:-50px;
+        margin-top:5px;
+    }
+
+.mGameWindow {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d8d8d8;
+    border-bottom: 3px solid #d8d8d8;
+    height: 80px;
+    background-color: white;
+}
+
+    .mGameWindow:hover {
+        border-bottom: 3px solid #6c6c6c;
+        cursor: pointer;
+    }
+
+    .mGameWindow img {
+        position: relative;
+        float: left;
+        width: 110px;
+        height: 60px;
+        margin:10px;
+    }
+
+    .mGameWindow p {
+        position: relative;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: black;
+        
+    }
+
+
+#mmLink {
+    position: absolute;
+    border: 5px solid black;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-image: url(~\wwwroot\images\transparent.gif);
+    text-decoration: none;
+    /*https://stackoverflow.com/questions/796087/make-a-div-into-a-link   
+
+            popravit
+        */
+}

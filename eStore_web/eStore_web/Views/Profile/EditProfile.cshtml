@@ -1,0 +1,298 @@
+﻿@using eStore_web.EF_Models;
+@using eStore_web.ViewModel;
+@model eStore_web.EF_Models.Kupac;
+@{
+    var Kupac = Model;
+    Layout = "_LayoutEditProfile";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+<script src="~/js/EditProfileValidation.js" !important></script>
+
+<style>
+    .mProfilePicture {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        margin:15px;
+    }
+
+        .mProfilePicture img {
+            position:relative;
+            display:block;
+            margin:0 auto;
+            width: 150px;
+            height: 150px;
+            border:1px solid #393939;
+        
+            }
+
+    label.error {
+        color: red;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .btn1 {
+        position: absolute;
+        top: 0px;
+        right: 15px;
+        z-index: 1;
+    }
+    .mInput {
+        margin:auto;
+        width:300px;
+        padding: 10px;
+        background-color: #eee;
+        border: 2px solid #939393;
+        overflow: hidden;
+    }
+</style>
+@{
+
+    string success = (string)TempData["success-key"];
+    string error = (string)TempData["error-key"];
+}
+@if (success != null)
+{
+
+    <div class="alert alert-success alert-dismissible" id="uno" role="alert">
+        <strong>Uspjesna ste promjenili: </strong>
+
+        <button type="button" class="close" id="close" data-dismiss="alert" aria-label="Close" onclick="ukloni(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span style="font-weight:600;text-align:left">@Html.Raw(success)</span>
+    </div>
+}
+@if (error != null)
+{
+
+    <div class="alert alert-danger alert-dismissible" id="uno" role="alert">
+        <strong>Greska!</strong>
+
+        <button type="button" id="close" class="close" data-dismiss="alert" aria-label="Close" onclick="ukloni(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span style="font-weight:600;text-align:left">@Html.Raw(error)</span>
+    </div>
+}
+
+
+
+    <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="EditProfileSet" class="form-horizontal EditForm">
+        <fieldset>
+            <input type="text" name="KupacID" id="KupacID" value="@Kupac.KupacID" hidden />
+            <input type="text" name="OsobaID" id="OsobaID" value="@Kupac.OsobaID" hidden />
+            <!-- Form Name -->
+            <legend>Licni podatci</legend>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="Ime">Ime</label>
+                <div class="col-md-4">
+
+                    @if (Kupac.Osoba.Ime != null)
+                    {
+                        <input id="Ime" name="Ime" type="text" placeholder="unesite vase ime" class="form-control input-md" value=@Kupac.Osoba.Ime>
+                    }
+                    else
+                    {
+                        <input id="Ime" name="Ime" type="text" placeholder="unesite vase ime" class="form-control input-md">
+                    }
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="Prezime">Prezime</label>
+                <div class="col-md-4">
+
+                    @if (Kupac.Osoba.Ime != null)
+                    {
+                        <input id="Prezime" name="Prezime" type="text" placeholder="unesite vase prezime" class="form-control input-md" value=@Kupac.Osoba.Prezime>
+                    }
+                    else
+                    {
+                        <input id="Prezime" name="Prezime" type="text" placeholder="unesite vase prezime" class="form-control input-md">
+
+                    }
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="DatumRodenja">Datum Rodenja</label>
+                <div class="col-md-4">
+                    @if (Kupac.Osoba.DatumRodenja != null)
+                    {
+                        <input id="DatumRodenja" name="DatumRodenja" type="date" placeholder="unesite datum rodenja" class="form-control input-md" value=@Kupac.Osoba.DatumRodenja.Date.ToString("yyyy-MM-dd")>
+                    }
+                    else
+                    {
+                        <input id="DatumRodenja" name="DatumRodenja" type="date" placeholder="unesite datum rodenja" class="form-control input-md">
+                    }
+                </div>
+            </div>
+            <legend>Pristupni podatci</legend>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="Email">Email</label>
+                <div class="col-md-4">
+                    @if (Kupac.Osoba.EmailAddress != null && Kupac.Osoba.EmailAddress.Email != null)
+                    {
+                        <input id="Email" name="Email" type="email" placeholder="Email" class="form-control input-md" required="" value=@Kupac.Osoba.EmailAddress.Email>
+                    }
+                    else
+                    {
+                        <input id="Email" name="Email" type="email" placeholder="Email" class="form-control input-md" required="">
+                    }
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="AccountName">Account Name</label>
+                <div class="col-md-4">
+
+                    @if (Kupac.Osoba.LoginInfo != null && Kupac.Osoba.LoginInfo.AccountName != null)
+                    {
+                        <input id="AccountName" name="AccountName" type="text" placeholder="AccountName" class="form-control input-md" required="" value="@Kupac.Osoba.LoginInfo.AccountName">
+                    }
+                    else
+                    {
+                        <input id="AccountName" name="AccountName" type="text" placeholder="AccountName" class="form-control input-md" required="">
+                    }
+
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="col-md-4 control-label" for="Password">password</label>
+                <div class="col-md-4">
+                    @if (Kupac.Osoba.LoginInfo != null && Kupac.Osoba.LoginInfo.Password != null)
+                    {
+                        <input id="Password" name="Password" type="password" placeholder="password" class="form-control input-md" required="" readonly value="@Kupac.Osoba.LoginInfo.Password">
+                    }
+                    else
+                    {
+                        <input id="Password" name="Password" type="password" placeholder="password" class="form-control input-md" required="" readonly>
+                    }
+                    @Html.ActionLink("Promjeni", "ChangePassword", "Profile", new { KupacID = Kupac.KupacID }, new { @class = "btn btn-primary  pull-rigth btn1" })
+                </div>
+
+            </div>
+            <!-- Text Input -->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="UserName">Korisnicko Ime</label>
+                <div class="col-md-4">
+                    @if (Kupac.UserName != null)
+                    {
+                        <input id="UserName" name="UserName" type="text" placeholder="Korisnicko Ime" class="form-control input-md" value="@Kupac.UserName">
+                    }
+                    else
+                    {
+                        <input id="UserName" name="UserName" type="text" placeholder="Korisnicko Ime" class="form-control input-md">
+                    }
+                </div>
+            </div>
+            <br />
+            @*
+        <legend>Lokacija</legend>
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Drzava">Drzava</label>
+            <div class="col-md-4">
+                <select id="Drzava" name="Drzava" class="form-control">
+                    <option value="0">Odaberite Drzavu</option>
+                    @if (ViewBag.drzave.Count != 0)
+                    {
+                        foreach (Drzava x in ViewBag.drzave)
+                        {
+                            <option value="@x.DrzavaID">@x.Naziv</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Regija">Regija</label>
+            <div class="col-md-4">
+                <select id="Regija" name="Regija" class="form-control">
+                    <option value="0">Odaberite Regiju</option>
+                    @if (ViewBag.regije.Count != 0)
+                    {
+                        foreach (Regija x in ViewBag.regije)
+                        {
+                            <option value="@x.RegijaID">@x.Naziv</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Grad">Odaberite Grad</label>
+            <div class="col-md-4">
+                <select id="Grad" name="Grad" class="form-control">
+                    <option value="0">Odaberite Grad</option>
+                    @foreach (Grad x in ViewBag.gradovi)
+                    {
+                        <option value="@x.GradID">@x.Naziv</option>
+                    }
+                </select>
+            </div>
+        </div>
+            *@
+
+
+
+            <br />
+            <legend>Uređivanje profila</legend>
+
+            <!-- File Button -->
+            <div class="mProfilePicture">
+                @if (Kupac.Osoba.OsobaImage != null)
+                {
+                    var base64 = Convert.ToBase64String(Kupac.Osoba.OsobaImage.Image);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                    <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/images/image.jpg" alt="Card image cap">
+                }
+
+                <br />
+                <div class="form-group">
+                    <div class="mInput">
+                        <input type="file" id="ProfilSlika" name="ProfilSlika" class="input-file center-block">
+                    </div>
+                    <br />
+                
+            </div>
+            <br />
+
+
+
+
+
+
+                <!-- Button (Double) -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="promjeni"></label>
+                    <div class="col-md-4">
+                        <button type="submit" id="promjeni" name="promjeni" class="btn btn-success pull-right btn-block">promjeni</button>
+                        <button type="submit" id="ponisti" name="ponisti" class="btn btn-default pull-left btn-block">ponisti</button>
+                    </div>
+                </div>
+              </div>
+
+</fieldset>
+        </form>

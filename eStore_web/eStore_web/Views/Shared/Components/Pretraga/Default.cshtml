@@ -1,0 +1,56 @@
+﻿@using eStore_web.EF_Models
+<style>
+    .mBtn
+    {
+        position:relative;
+        width:100%;
+        
+    }
+</style>
+@{
+    int brojIgrica = ViewBag.igre.Count;
+    if (brojIgrica > 6)
+    {
+        brojIgrica = 6;
+    }
+    string pretraga = ViewBag.pretraga;
+    if (ViewBag.igre.Count == 0)
+    {
+        <br /><p style="text-align:center;font-weight:bold">Nema podudaranja</p><br />
+    }
+    else
+    {
+        <p style="text-align:left;font-weight:bold;margin:15px;">  Rezultata: @ViewBag.igre.Count</p>
+
+        @foreach (Igra x in ViewBag.igre)
+        {
+            if (--brojIgrica > -1)
+            {
+        <a href="/Kupac/GameDetailes?IgraID=@x.IgraID" class="mA">
+            <div class="mGameWindow">
+
+                @if (x.IgricaImage != null)
+                {
+                    var base64 = Convert.ToBase64String(x.IgricaImage.Image);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                    <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top " src="~/images/image.jpg" alt="Card image cap">
+                }
+                    <p>@x.Naziv</p>
+
+                
+            </div>
+        </a>
+            }
+        }
+        if (ViewBag.igre.Count > 6)
+        {
+            @Html.ActionLink("Vidi sve", "Index", "Kupac", new { pretraga = pretraga }, new { @class = "btn btn-primary mBtn" })
+        }
+    }
+
+}

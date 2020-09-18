@@ -1,0 +1,27 @@
+﻿@model List<eStore_web.EF_Models.Igra>
+@{
+    ViewData["Title"] = "OdobriGet";
+}
+
+<h2>Odobravanje igara</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Cijena</th>
+            <th>Datum objave</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in @Model)
+        {
+            <tr>
+                <td>@item.Naziv</td>
+                <td>@item.Cijena</td>
+                <td>@item.DatumObjave.ToShortDateString()</td>
+                <td><a asp-action="OdobriSet" asp-route-id="@item.IgraID" class="btn btn-success">Odobri</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,69 @@
+﻿@using System;
+@using eStore_web.EF_Models;
+
+@{
+    Igra i = (Igra)ViewData["igra"];
+    List<GameGenre> zanrovi = (List<GameGenre>)ViewData["zanrovi"];
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/pocetna.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<form class="form-horizontal" action="/Developer/RequestPublish">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Zahtjev za izdavanje igre</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="naziv">Naziv</label>
+            <div class="col-md-4">
+                <input id="igraID" name="id" type="text" value="@i.IgraID" hidden />
+                <input id="naziv" name="naziv" type="text" placeholder="" value="@i.Naziv" class="form-control input-md" required="">
+                <span class="help-block">help</span>
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="opis">Opis</label>
+            <div class="col-md-4">
+                <textarea class="form-control" id="opis" name="opis" >@i.Opis</textarea>
+            </div>
+        </div>
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Genre">Žanr</label>
+            <div class="col-md-4">
+                <select id="Genre" name="Genre" class="form-control">
+                    @{
+                        foreach (GameGenre z in zanrovi)
+                        {
+      
+                            <option value="@z.GameGenreID">@z.NazivZanra</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- File Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="filebutton">Link Igre</label>
+            <div class="col-md-4">
+                <textarea class="form-control" id="igra" name="igra"></textarea>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="submit"></label>
+            <div class="col-md-4">
+                <button id="submit" name="submit" class="btn btn-primary">Pošalji</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

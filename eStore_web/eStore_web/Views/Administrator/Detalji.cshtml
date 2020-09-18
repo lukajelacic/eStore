@@ -1,0 +1,42 @@
+﻿@model eStore_web.ViewModel.AdministratorDetaljiVM
+@{
+    ViewData["Title"] = "Detalji";
+}
+<style>
+    table {
+        text-align: center;
+    }
+</style>
+<h2>Detalji</h2>
+
+<table class="table  table-bordered">
+    <tbody>
+        <tr>
+            <td>Ime i prezime</td>
+            <td>@Model.ImePrezime</td>
+        </tr>
+        <tr>
+            <td>Datum rodjenja</td>
+            <td>@Model.DatumRodjenja.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Email adresa</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Grad</td>
+            <td>@Model.Grad</td>
+        </tr>
+        <tr>
+            <td>Kompanija</td>
+            <td>@Model.Kompanija</td>
+        </tr>
+    </tbody>
+</table>
+<div id="mojDiv" style="border:1px solid black"></div>
+
+<script>
+     $.get('@Url.Action("Index","AjaxIgre",new {id=Model.DeveloperID })', function (rezultat, status) {
+        $("#mojDiv").html(rezultat);
+    });
+</script>

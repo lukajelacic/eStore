@@ -1,0 +1,69 @@
+@using eStore_web.EF_Models
+@{
+    ViewData["Title"] = "UrediForm";
+    var igra = (Igra)ViewData["kljuc"];
+    var zanrovi = (List<GameGenre>)ViewData["zanrove"];
+    var kategorije = (List<RatingCategorie>)ViewData["kategorije"];
+}
+
+<h2>UrediForm</h2>
+<form action="/Administrator/UrediSnimi" method="post">
+    <input type="hidden" value="@igra.IgraID" name="IdPolje"/>
+    <div class="form-group">
+        <label>Naziv</label>
+        <input type="text" class="form-control" name="NazivPolje" placeholder="Naziv" value="@igra.Naziv" />
+    </div>
+    <div class="form-group">
+        <label>Cijena</label>
+        <input type="text" class="form-control" name="CijenaPolje" placeholder="Cijena" value="@igra.Cijena" />
+    </div>
+    <div class="form-group">
+        <label>Datum objave</label>
+        <input type="text" class="form-control" name="DatumPolje" placeholder="Datum objave" value="@igra.DatumObjave" />
+    </div>
+    <div class="form-group">
+        <label>Opis</label>
+        <input type="text" class="form-control" name="OpisPolje" placeholder="Opis" value="@igra.Opis" />
+    </div>
+    <div class="form-group">
+        <label>Premium status</label>
+        <input type="text" class="form-control" name="PremiumPolje" placeholder="Premium" value="@igra.PremiumStatus" />
+    </div>
+    <div class="form-group">
+        <label>Zanr</label>
+        <select class="form-control" name="ZanrPolje">
+            <option>--Odaberite zanr--</option>
+            @foreach (GameGenre x in zanrovi)
+            {
+                if (x.GameGenreID == igra.GameGenreID)
+                {
+                    <option value="@x.GameGenreID" selected>@x.NazivZanra</option>
+                }
+                else
+                {
+                    <option value="@x.GameGenreID">@x.NazivZanra</option>
+                }
+            }
+
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Kategorija</label>
+        <select class="form-control" name="KategorijaPolje">
+            <option>--Odaberite kategoriju--</option>
+            @foreach (RatingCategorie x in kategorije)
+            {
+                if (x.RatingCategorieID == igra.RatingCategorieID)
+                {
+                    <option value="@x.RatingCategorieID" selected>@x.NazivKategorije</option>
+                }
+                else
+                {
+                    <option value="@x.RatingCategorieID">@x.NazivKategorije</option>
+                }
+            }
+
+        </select>
+    </div>
+    <input type="submit" value="Snimi" />
+</form>

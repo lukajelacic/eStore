@@ -1,0 +1,39 @@
+@*@model List<eStore_web.EF_Models.Igra>*@
+@model eStore_web.ViewModel.PregledIgaraAdministratorVM
+@{
+    ViewData["Title"] = "PregledIgara";
+    
+}
+
+<h2>Pregled igara za @Model.Developer</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Naziv</td>
+            <td>Opis</td>
+            <td>Cijena</td>
+            <td>Datum objave</td>
+            <td>Odobrena</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in @Model.Igre)
+        {
+            <tr>
+                <td>@x.Naziv</td>
+                <td>@x.Opis</td>
+                <td>@x.Cijena</td>
+                <td>@x.DatumObjave</td>
+                @if (x.Odobrena == true)
+                {
+                    <td><a asp-action="Zabrani" asp-route-id="@x.IgraID" class="btn btn-success">DA</a></td>
+                }
+                else
+                {
+                    <td><a asp-action="Odobri" asp-route-id="@x.IgraID" class="btn btn-danger">NE</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

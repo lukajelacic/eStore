@@ -1,0 +1,130 @@
+﻿@{
+
+}
+@model eStore_web.EF_Models.Kupac
+@{
+    Layout = "_LayoutAutentifikacija";
+    var Kupac = Model;
+    string success = (string)TempData["success-key"];
+    string error = (string)TempData["error-key"];
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+<script src="~/js/EditProfileValidation.js" !important></script>
+<style>
+    label.error {
+        color: red;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+
+
+
+
+        $(".Register").validate({
+
+            rules:
+            {
+                Email:
+                {
+                    required: true,
+                    maxlength: 30,
+                    IsEmailValid: true,
+                    email: true
+                },
+
+                AccountName:
+                {
+                    required: true,
+                    maxlength: 30,
+                    IsAccountNameValid: true
+                },
+                NoviPassword1:
+                {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 30,
+                },
+                NoviPassword2:
+                {
+                    required: true,
+                    equalTo: "#NoviPassword1",
+
+                }
+
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+
+</script>
+
+
+@if (success != null)
+{
+
+    <div class="alert alert-success alert-dismissible" id="uno" role="alert">
+        <strong>Uspjesna ste promjenili: </strong>
+
+        <button type="button" class="close" id="close" data-dismiss="alert" aria-label="Close" onclick="ukloni(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span style="font-weight:600;text-align:left">@Html.Raw(success)</span>
+    </div>
+}
+@if (error != null)
+{
+
+    <div class="alert alert-danger alert-dismissible" id="uno" role="alert">
+        <strong>Greska!</strong>
+
+        <button type="button" id="close" class="close" data-dismiss="alert" aria-label="Close" onclick="ukloni(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span style="font-weight:600;text-align:left">@Html.Raw(error)</span>
+    </div>
+}
+
+
+
+
+<form class="form-horizontal" asp-controller="Autentifikacija" asp-action="LoginSet" method="post">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Prijava</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="AccountName">Account Name</label>
+            <div class="col-md-4">
+                <input id="AccountName" name="AccountName" type="text" placeholder="unesite account name" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Password input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="password">password</label>
+            <div class="col-md-4">
+                <input id="password" name="password" type="password" placeholder="unesite password" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Submit"></label>
+            <div class="col-md-8">
+                <button type="submit" id="Submit" name="Submit" class="btn btn-success">Prijavi se</button>
+                <button type="reset" id="Cancel" name="Cancel" class="btn btn-default">Poništi</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

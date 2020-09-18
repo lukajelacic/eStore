@@ -1,0 +1,38 @@
+﻿@model List<eStore_web.EF_Models.Igra>
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    table {
+        text-align: center;
+    }
+</style>
+<h4>Igre odabranog developera</h4>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Zanr</th>
+            <th>Opis</th>
+            <th>Cijena</th>
+            <th>Datum objave</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in @Model)
+        {
+            <tr>
+                @if (x.Odobrena == true) { 
+                    <td>@x.Naziv</td>
+                    <td>@x.GameGenre.NazivZanra</td>
+                    <td>@x.Opis</td>
+                    <td>@x.Cijena</td>
+                    <td>@x.DatumObjave.ToShortDateString()</td>
+                }
+               
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+﻿.mLink button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1;
+    border: none;
+    text-decoration: none;
+    min-width: 30px;
+    min-height: 20px;
+    padding: 5px 10px 5px 10px;
+    color: #787878;
+    background-color: transparent;
+}
+
+    .mLink button:hover {
+        color: black;
+    }
+
+    .mLink button:active {
+        outline: none;
+    }

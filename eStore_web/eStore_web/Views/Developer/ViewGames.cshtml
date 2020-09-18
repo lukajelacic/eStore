@@ -1,0 +1,25 @@
+﻿@using System;
+@using eStore_web.EF_Models;
+
+@{
+    List<Igra> igre = (List<Igra>)ViewData["listaIgara"];
+    int devID = (int)ViewData["dev"];
+}
+
+<h1>Pregled igara</h1>
+
+<table>
+    <tbody>
+        @foreach (Igra i in igre)
+        {
+            if (i.DeveloperID == devID)
+            {
+                <tr>
+                    <td>@i.Naziv</td>
+                    <td><a href="ViewGameDetails?igraID=@i.IgraID">Detalji</td>
+                    <td><a href="ViewGameDetails?igraID=@i.IgraID">Izbrisi</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

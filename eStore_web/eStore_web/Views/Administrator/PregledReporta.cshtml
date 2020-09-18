@@ -1,0 +1,40 @@
+﻿@model List<eStore_web.ViewModel.AdministratorPregledReportaVM>
+@{
+    ViewData["Title"] = "PregledReporta";
+}
+<style>
+    table {
+        text-align: center;
+    }
+</style>
+<h2>Pregled reporta</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Reportovani kupac</th>
+            <th>Razlog reporta</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.ReportovaniKupac</td>
+                <td>@item.RazlogReporta</td>
+                @if (item.Reputacija <= 10)
+                {
+                    <td><a asp-action="BanujKupca" asp-route-id="@item.KupacId" asp-route-reportId="@item.Id" class="btn btn-danger">Banuj</a></td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="BanujKupca" asp-route-id="@item.KupacId" asp-route-reportId="@item.Id" class="btn btn-danger">Banuj</a>
+                        <a asp-action="SmanjiReputaciju" asp-route-id="@item.KupacId" asp-route-reportId="@item.Id" class="btn btn-warning">Smanji reputaciju</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

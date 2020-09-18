@@ -1,0 +1,51 @@
+﻿@model eStore_web.ViewModel.AdministratorUrediVM
+@{
+    ViewData["Title"] = "UrediForm";
+
+}
+
+<h2>Uredi igru</h2>
+<form asp-action="Uredi" method="post">
+    <input type="hidden" asp-for="@Model.IgraId" value="@Model.IgraId" />
+    <div class="form-group">
+        <label asp-for="@Model.Naziv">Naziv</label>
+        <input asp-for="@Model.Naziv" type="text" value="@Model.Naziv" class="form-control" />
+        <span asp-validation-for="@Model.Naziv" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Cijena">Cijena</label>
+        <input asp-for="@Model.Cijena" type="text" value="@Model.Cijena" class="form-control" />
+        <span asp-validation-for="@Model.Cijena" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.DatumObjave">Datum objave</label>
+        <input asp-for="@Model.DatumObjave" type="datetime" value="@Model.DatumObjave" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Opis">Opis</label>
+        <input asp-for="@Model.Opis" type="text" value="@Model.Opis" class="form-control" />
+        <span asp-validation-for="@Model.Opis" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Odobrena">Odobrena</label>
+        <input asp-for="@Model.Odobrena" type="text" value="@Model.Odobrena" class="form-control" readonly />
+        <span asp-validation-for="@Model.Odobrena" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PremiumStatus">Premium</label>
+        <input asp-for="@Model.PremiumStatus" type="text" value="@Model.PremiumStatus" class="form-control" readonly />
+        <span asp-validation-for="@Model.PremiumStatus" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.ZanrId">Zanrovi</label>
+        <select asp-for="@Model.ZanrId" asp-items="@Model.Zanrovi" class="form-control"></select>
+        <span asp-validation-for="@Model.ZanrId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.KategorijaId">Kategorije</label>
+        <select asp-for="@Model.KategorijaId" asp-items="@Model.Kategorije" class="form-control"></select>
+        <span asp-validation-for="@Model.KategorijaId" class="text-danger"></span>
+    </div>
+    @Html.AntiForgeryToken()
+    <input type="submit" value="Snimi" class="btn btn-primary" />
+</form>

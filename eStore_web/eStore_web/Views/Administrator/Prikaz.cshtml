@@ -1,0 +1,54 @@
+
+@using eStore_web.EF_Models
+
+@{
+    ViewData["Title"] = "Prikaz";
+    var developeri = (List<Developer>)ViewData["lista-developera"];
+}
+<style>
+    table {
+        text-align: center;
+    }
+</style>
+<h2>Banovanje</h2>
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <td>Ime</td>
+            <td>Prezime</td>
+            <td>Naziv kompanije</td>
+            <td>Banovan</td>
+            <td>Akcija</td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in developeri)
+        {
+            <tr>
+                <td>@x.Osoba.Ime</td>
+                <td>@x.Osoba.Prezime</td>
+
+                <td>@x.NazivKompanije</td>
+                <td>@(x.Banovan == true ? "DA" : "NE")</td>
+                @if (x.Banovan == true)
+                {
+                    <td>
+                        <a asp-action="Detalji" asp-route-DeveloperID="@x.DeveloperID" class="btn btn-info">Detalji</a>
+                        <a asp-action="Unban" asp-route-DeveloperID="@x.DeveloperID" class="btn btn-warning">Unbanuj</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Detalji" asp-route-DeveloperID="@x.DeveloperID" class="btn btn-info">Detalji</a>
+                        <a asp-action="Banuj" asp-route-DeveloperID="@x.DeveloperID" class="btn btn-warning">Banuj</a>
+                    </td>
+                }
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>

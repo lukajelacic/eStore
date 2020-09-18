@@ -1,0 +1,34 @@
+﻿@model List<eStore_web.EF_Models.Refund>
+@{
+    ViewData["Title"] = "PrikazRefundova";
+}
+
+<h2>PrikazRefundova</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kupac</th>
+            <th>Vrijeme kupovine</th>
+            <th>Igra</th>
+            <th>Razlog</th>
+            <th>Akcija</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.Kupac.Osoba.Ime @item.Kupac.Osoba.Prezime </td>
+                <td>@item.VrijemeKupovine</td>
+                <td>@item.Igra.Naziv</td>
+                <td>@item.RazlogRefunda</td>
+                <td>
+                    <a asp-action="Prihvati" asp-route-id="@item.RefundID" class="btn btn-success">Prihvati</a>
+                    <a asp-action="Odbij" asp-route-id="@item.RefundID" class="btn btn-warning">Odbij</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

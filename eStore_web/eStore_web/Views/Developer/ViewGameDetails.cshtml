@@ -1,0 +1,20 @@
+﻿@using System;
+@using eStore_web.EF_Models;
+
+@{
+    Igra i = (Igra)ViewData["igra"];
+}
+
+<h1>@i.Naziv</h1>
+
+<p><b>Opis: </b> @i.Opis</p>
+<p><b>Žanr: </b> @i.GameGenre.NazivZanra</p>
+<p><b>Cijena: </b> @i.Cijena</p>
+<p><b>Datum Objave: </b> @i.DatumObjave</p>
+<p><b>Premium Status: </b> @i.PremiumStatus</p>
+@if (i.RatingCategorie != null)
+{
+    <p><b>Rating: </b> @i.RatingCategorie.OznakaKategorije</p>
+}
+
+<a href="EditGame?igraID=@i.IgraID">Uredi</a>

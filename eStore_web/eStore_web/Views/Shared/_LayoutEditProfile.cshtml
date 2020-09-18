@@ -1,0 +1,164 @@
+﻿@using eStore_web.EF_Models;
+@using Microsoft.AspNetCore.Mvc;
+@using eStore_web.Common;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.EntityFrameworkCore;
+
+@{
+    LoginInfo Log = Context.GetLogiraniKorisnik();
+    Kupac Kup = null;
+    Developer Dev = null;
+    Administrator Admin = null;
+    if (Log != null)
+    {
+        if (Log.TipKorisnika == 1)
+        {
+            Kup = Context.GetLogiraniKorisnikAll<Kupac>();
+        }
+        if (Log.TipKorisnika == 2)
+        {
+            Dev = Context.GetLogiraniKorisnikAll<Developer>();
+        }
+        if (Log.TipKorisnika == 3)
+        {
+            Admin = Context.GetLogiraniKorisnikAll<Administrator>();
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - eStore_web</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+    <link rel="stylesheet" href="~/css/mLayoutPage.css">
+
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">eStore</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Kupac" asp-action="Index">Store</a></li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+                    @if (Log == null)
+                    {
+                        <li><a asp-area="" asp-controller="Autentifikacija" asp-action="Login">LogIn</a></li>
+                        <li><a asp-area="" asp-controller="Autentifikacija" asp-action="Register">Register</a></li>
+                    }
+                    else
+                    {
+                        if (Log.TipKorisnika == 1)
+                        {
+
+                            <li class="">
+                                <div class="mUser">
+                                    
+                                    @if (Kup.Osoba.OsobaImage != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(Kup.Osoba.OsobaImage.Image);
+                                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                                        <img src="@imgsrc">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/profileDemo.png">
+                                    }
+                                    @Html.ActionLink(Log.AccountName, "Index", "Profile", new { KupacID = Kup.KupacID })
+                                    @Html.ActionLink(Math.Round(Kup.Wallet.balance, 2).ToString() + " KM", "Index", "Profile", new { KupacID = Kup.KupacID })
+
+
+
+
+
+
+
+
+                                </div>
+                            </li>
+
+                        }
+                        if (Log.TipKorisnika == 2)
+                        {
+
+                            <li class="">
+                                <div class="mUser">
+                                    <img src="~/images/profileDemo.png" />
+
+                                    @Html.ActionLink(Log.AccountName, "Index", "Kupac")
+
+
+                                </div>
+                            </li>
+
+                        }
+                        if (Log.TipKorisnika == 3)
+                        {
+
+                            <li class="">
+                                <div class="mUser">
+                                    <img src="~/images/profileDemo.png" />
+
+                                    @Html.ActionLink(Log.AccountName, "Index", "Kupac")
+
+
+                                </div>
+                            </li>
+
+                        }
+
+                        }
+
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+
+
+
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2018 - eStore_web</p>
+        </footer>
+    </div>
+
+ 
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

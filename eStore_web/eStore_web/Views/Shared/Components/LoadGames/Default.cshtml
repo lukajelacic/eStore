@@ -1,0 +1,77 @@
+﻿@using eStore_web.ViewModel
+@{
+    KupacIndexVM VM = ViewBag.VM;
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/Search.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/Loading.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/pocetna.css" !important>
+
+
+@if (VM.from == 0 && VM.Igre.Count == 0)
+{
+    <h1>Nema rezultata, pokusajte neke nove parametre</h1>
+    <h1 id="ddk" hidden>nm</h1>
+}
+else
+{
+    @if (VM.Igre.Count == 0)
+    {
+        <h1 id="ddk" hidden>nm</h1>
+    }
+}
+@for (int i = 0; i < VM.Igre.Count; i++)
+{
+    <div class="card" style="width: 25rem;">
+
+
+        @if (VM.PopustProcent[i] != 0)
+        {
+            <div class="card-banner-discount">-@VM.PopustProcent[i]%</div>
+        }
+        @if (VM.Igre[i].PremiumStatus == true)
+        {
+            if (VM.PopustProcent[i] != 0)
+            {
+                <div class="card-banner-premium">Premium</div>
+            }
+            else
+            {
+                <div class="card-banner-premium-small">Premium</div>
+            }
+        }
+        @if (VM.Igre[i].IgricaImage != null)
+        {
+            var base64 = Convert.ToBase64String(VM.Igre[i].IgricaImage.Image);
+            var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+            <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+
+        }
+        else
+        {
+            <img class="card-img-top" src="~/images/image.jpg" alt="Card image cap">
+
+        }
+
+        <div class="card-body">
+
+            <h5 class="card-title">@VM.Igre[i].Naziv</h5>
+
+
+
+
+            @if (VM.PopustProcent[i] == 0)
+            {
+                <p class="card-text"><b>@VM.Igre[i].Cijena KM</b></p>
+            }
+            else
+            {
+                <p class="card-text"><partial style="color:#9d9d9d;font-size:12px;font-weight:600;padding-right:3px;text-decoration:line-through;">@VM.Igre[i].Cijena</partial><b>@VM.novaCijena[i] KM</b></p>
+            }
+
+            @Html.ActionLink("Detalji", "GameDetailes", "Kupac", new { igraID = VM.Igre[i].IgraID }, new { @class = "btn mButton" })
+        </div>
+    </div>
+}
+

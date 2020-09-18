@@ -1,0 +1,169 @@
+﻿@using eStore_web.EF_Models;
+
+<link rel="stylesheet" type="text/css" href="~/css/profile.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/mLink.css" !important>
+<link rel="stylesheet" type="text/css" href="~/css/profile.css" !important>
+<style>
+    .nav a {
+        color: black;
+    }
+
+    .mButton {
+        color: #068dff;
+        border: 1px solid #068dff;
+        background-color: #eee;
+        transition-duration: 250ms;
+        transition-delay: 50ms;
+    }
+
+        .mButton:hover {
+            color: white;
+            background-color: #068dff;
+        }
+    .mRefundButton {
+        margin: 3px;
+        position: absolute;
+        height:22px;
+        right: 0;
+        top: 0;
+        color: #656565;
+        border-color: #656565;
+    }
+        .mRefundButton:hover {
+            background-color: #656565;
+            color:white;
+        }
+
+        
+</style>
+
+
+
+<div class="container" id="mContainer">
+    <div id="mProfileBg">
+
+    </div>
+    <div id="mBasicInfo">
+        <div id="mProfilePicture">
+            @if (ViewBag.kupac.Osoba.OsobaImage != null)
+            {
+                var base64 = Convert.ToBase64String(@ViewBag.kupac.Osoba.OsobaImage.Image);
+                var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+                <img class="card-img-top" src="@imgsrc" alt="Card image cap">
+            }
+            else
+            {
+                <img class="card-img-top" src="~/images/profileDemo.png" alt="Card image cap">
+            }
+        </div>
+        <h2 id="mUserName">@ViewBag.kupac.UserName</h2>
+        @if (ViewBag.IsSame == 1)
+        {
+        <button type="button" class="mButton btn btn-outline-primary center-block" onclick="location.href='/Profile/EditProfile?KupacID=@ViewBag.kupac.KupacID'">Edit profile</button>
+        }
+    </div>
+    <div id="mContent">
+
+
+
+        <div class="container" id="mTabs">
+            <ul class="nav nav-tabs">
+                <li><a href="#/" onclick="showStuff('tab1','none',@ViewBag.kupac.KupacID,@ViewBag.IsSame)">Info</a></li>
+                <li><a href="#/" onclick="showStuff('tab2','PrikazIgra',@ViewBag.kupac.KupacID,@ViewBag.IsSame)">Igre</a></li>
+                <li><a href="#/" onclick="showStuff('tab3','PrikazRecenzija',@ViewBag.kupac.KupacID,@ViewBag.IsSame)">Recenzije</a></li>
+                <li><a href="#/" onclick="showStuff('tab4','PrikazWishlist',@ViewBag.kupac.KupacID,@ViewBag.IsSame)">Wishlist</a></li>
+            </ul>
+        </div>
+        <div class="container tabContent Informacije mContent " id="tab1" style="display : none">
+            <table class="table table-hover">
+
+                <tr>
+                    <td>Premium user:</td>
+                    <td>@ViewBag.kupac.PretplacenNaPremium</td>
+                </tr>
+                <tr>
+                    <td>Ban status:</td>
+                    @if (@ViewBag.kupac.BanStatus == false)
+                    {
+                        <td>@ViewBag.kupac.BanStatus</td>
+                    }
+                    else
+                    {
+                        <td class="bad">@ViewBag.kupac.BanStatus</td>
+                    }
+
+                </tr>
+                <tr>
+                    <td>Reputacija:</td>
+                    @if (@ViewBag.kupac.Reputacija >= 5)
+                    {
+                        <td>@ViewBag.kupac.Reputacija</td>
+                    }
+                    else
+                    {
+                        <td class="bad">@ViewBag.kupac.Reputacija</td>
+                    }
+                </tr>
+
+                <tr>
+
+                    <td>Ime i Prezime:</td>
+                    @if (ViewBag.Kupac.Osoba.Ime != null && ViewBag.Kupac.Osoba.Prezime != null)
+                    {
+                        <td>@ViewBag.Kupac.Osoba.Ime @ViewBag.Kupac.Osoba.Prezime</td>
+                    }
+                    else
+                    {
+                        <td>Nepoznato</td>
+                    }
+                </tr>
+
+                <tr>
+                    <td>Datum Rodenja:</td>
+                    @if (ViewBag.kupac.Osoba.DatumRodenja.Date.ToString("dd.MM.yyyy") != "01.01.0001")
+                    {
+                        string datum = ViewBag.kupac.Osoba.DatumRodenja.Date.ToString("dd.MM.yyyy");
+                        <td>@datum</td>
+                    }
+                    else
+                    {
+                        <td>nepoznato</td>
+                    }
+                </tr>
+            </table>
+        </div>
+
+        <div class="container tabContent Igre mContent" id="tab2" style="display : none">
+        </div>
+        <div class="container tabContent Recenzije mContent" id="tab3" style="display : none">
+        </div>
+        <div class="container tabContent Recenzije mContent" id="tab4" style="display : none">
+        </div>
+    </div>
+</div>
+
+<partial name="_RefundWindow" />
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/js/PopUp.js"></script>
+<script type="text/javascript">
+    // https://stackoverflow.com/questions/16456895/how-to-hide-other-tabss-content-and-display-only-the-selected-tabs-content
+    function showStuff(element, ele, KupacID,IsSame) {
+        var tabContents = document.getElementsByClassName('tabContent');
+        var showElement = document.getElementsByClassName(element);
+        for (var i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = 'none';
+        }
+        if (ele != 'none') {
+            $.get("/Profile/vcProfile?KupacID=" + KupacID + "&VC=" + ele+"&IsSame="+IsSame, function (data) {
+                $("#" + element).html(data);
+
+            });
+        }
+        $("#" + element).css("display", "block");
+       
+    }
+</script>
+
